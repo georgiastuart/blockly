@@ -19,8 +19,9 @@
  */
 
 /**
- * @fileoverview Generating JavaScript for variable blocks.
- * @author fraser@google.com (Neil Fraser)
+ * @fileoverview Generating TI-Basic for variable blocks.
+ * @author fraser@google.com (Neil Fraser) Template
+ * @author georgia.stuart@gmail.com (Georgia Stuart) TI-Basic
  */
 'use strict';
 
@@ -42,5 +43,5 @@ Blockly.TIBasic['variables_set'] = function(block) {
       Blockly.TIBasic.ORDER_ASSIGNMENT) || '0';
   var varName = Blockly.TIBasic.variableDB_.getName(
       block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
-  return varName + ' = ' + argument0 + ';\n';
+  return varName + ' := ' + argument0 + ':';
 };
