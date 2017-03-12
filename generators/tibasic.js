@@ -47,7 +47,7 @@ Blockly.TIBasic = new Blockly.Generator('TIBasic');
  */
 Blockly.TIBasic.addReservedWords(
     'Blockly,' +  // In case JS is evaled in the current window.
-    'Define,Pgrm,EndPgrm,If,Then,ElseIf,EndIf,Disp,While,EndWhile,not,and,or,xor,nor,nand,&,#,!,%');
+    'Define,Pgrm,EndPgrm,If,Then,ElseIf,EndIf,Disp,While,EndWhile,not,and,or,xor,nor,nand,&,#,!,%,text');
 
 /**
  * Order of operation ENUMs.

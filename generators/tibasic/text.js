@@ -71,7 +71,7 @@ Blockly.TIBasic['text_append'] = function (block) {
         block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
     var value = Blockly.TIBasic.valueToCode(block, 'TEXT',
             Blockly.TIBasic.ORDER_NONE) || '\'\'';
-    return varName + ' := string(' + varName + ') & string(' + value + ')';
+    return varName + ' := string(' + varName + ') & string(' + value + '):';
 };
 
 Blockly.TIBasic['text_length'] = function (block) {
@@ -135,70 +135,71 @@ Blockly.TIBasic['text_charAt'] = function (block) {
     throw 'Unhandled option (text_charAt).';
 };
 
-/**
- * Returns an expression calculating the index into a string.
- * @private
- * @param {string} stringName Name of the string, used to calculate length.
- * @param {string} where The method of indexing, selected by dropdown in Blockly
- * @param {string=} opt_at The optional offset when indexing from start/end.
- * @return {string} Index expression.
- */
-Blockly.TIBasic.text.getIndex_ = function (stringName, where, opt_at) {
-    if (where == 'FIRST') {
-        return '0';
-    } else if (where == 'FROM_END') {
-        return stringName + '.length - 1 - ' + opt_at;
-    } else if (where == 'LAST') {
-        return stringName + '.length - 1';
-    } else {
-        return opt_at;
-    }
-};
+// NOT IMPLEMENTED IN TI-BASIC YET
+// /**
+//  * Returns an expression calculating the index into a string.
+//  * @private
+//  * @param {string} stringName Name of the string, used to calculate length.
+//  * @param {string} where The method of indexing, selected by dropdown in Blockly
+//  * @param {string=} opt_at The optional offset when indexing from start/end.
+//  * @return {string} Index expression.
+//  */
+// Blockly.TIBasic.text.getIndex_ = function (stringName, where, opt_at) {
+//     if (where == 'FIRST') {
+//         return '0';
+//     } else if (where == 'FROM_END') {
+//         return stringName + '.length - 1 - ' + opt_at;
+//     } else if (where == 'LAST') {
+//         return stringName + '.length - 1';
+//     } else {
+//         return opt_at;
+//     }
+// };
 
 Blockly.TIBasic['text_getSubstring'] = function (block) {
     // Get substring.
     var text = Blockly.TIBasic.valueToCode(block, 'STRING',
-            Blockly.TIBasic.ORDER_FUNCTION_CALL) || '\'\'';
+            Blockly.TIBasic.ORDER_FUNCTION_CALL) || '\"\"';
     var where1 = block.getFieldValue('WHERE1');
     var where2 = block.getFieldValue('WHERE2');
     if (where1 == 'FIRST' && where2 == 'LAST') {
         var code = text;
     } else if (text.match(/^'?\w+'?$/) ||
-        (where1 != 'FROM_END' && where1 != 'LAST' &&
-        where2 != 'FROM_END' && where2 != 'LAST')) {
-        // If the text is a variable or literal or doesn't require a call for
-        // length, don't generate a helper function.
-        switch (where1) {
-            case 'FROM_START':
-                var at1 = Blockly.TIBasic.getAdjusted(block, 'AT1');
-                break;
-            case 'FROM_END':
-                var at1 = Blockly.TIBasic.getAdjusted(block, 'AT1', 1, false,
-                    Blockly.TIBasic.ORDER_SUBTRACTION);
-                at1 = text + '.length - ' + at1;
-                break;
-            case 'FIRST':
-                var at1 = '0';
-                break;
-            default:
-                throw 'Unhandled option (text_getSubstring).';
-        }
-        switch (where2) {
-            case 'FROM_START':
-                var at2 = Blockly.TIBasic.getAdjusted(block, 'AT2', 1);
-                break;
-            case 'FROM_END':
-                var at2 = Blockly.TIBasic.getAdjusted(block, 'AT2', 0, false,
-                    Blockly.TIBasic.ORDER_SUBTRACTION);
-                at2 = text + '.length - ' + at2;
-                break;
-            case 'LAST':
-                var at2 = text + '.length';
-                break;
-            default:
-                throw 'Unhandled option (text_getSubstring).';
-        }
-        code = text + '.slice(' + at1 + ', ' + at2 + ')';
+            (where1 != 'FROM_END' && where1 != 'LAST' &&
+            where2 != 'FROM_END' && where2 != 'LAST')) {
+            // If the text is a variable or literal or doesn't require a call for
+            // length, don't generate a helper function.
+            switch (where1) {
+                case 'FROM_START':
+                    var at1 = Blockly.TIBasic.getAdjusted(block, 'AT1');
+                    break;
+                case 'FROM_END':
+                    var at1 = Blockly.TIBasic.getAdjusted(block, 'AT1', 1, false,
+                        Blockly.TIBasic.ORDER_SUBTRACTION);
+                    at1 = 'dim(' + text + ')' + at1;
+                    break;
+                case 'FIRST':
+                    var at1 = '0';
+                    break;
+                default:
+                    throw 'Unhandled option (text_getSubstring).';
+            }
+            switch (where2) {
+                case 'FROM_START':
+                    var at2 = Blockly.TIBasic.getAdjusted(block, 'AT2', 1);
+                    break;
+                case 'FROM_END':
+                    var at2 = Blockly.TIBasic.getAdjusted(block, 'AT2', 0, false,
+                        Blockly.TIBasic.ORDER_SUBTRACTION);
+                    at2 = 'dim(' + text + ')' + at2;
+                    break;
+                case 'LAST':
+                    var at2 = 'dim(' + text + ')';
+                    break;
+                default:
+                    throw 'Unhandled option (text_getSubstring).';
+            }
+            code = 'mid(' + text + ',' + at1 + ', ' + (at2 - at1) + ')';
     } else {
         var at1 = Blockly.TIBasic.getAdjusted(block, 'AT1');
         var at2 = Blockly.TIBasic.getAdjusted(block, 'AT2');
@@ -230,72 +231,68 @@ Blockly.TIBasic['text_getSubstring'] = function (block) {
     return [code, Blockly.TIBasic.ORDER_FUNCTION_CALL];
 };
 
-Blockly.TIBasic['text_changeCase'] = function (block) {
-    // Change capitalization.
-    var OPERATORS = {
-        'UPPERCASE': '.toUpperCase()',
-        'LOWERCASE': '.toLowerCase()',
-        'TITLECASE': null
-    };
-    var operator = OPERATORS[block.getFieldValue('CASE')];
-    var textOrder = operator ? Blockly.TIBasic.ORDER_MEMBER :
-        Blockly.TIBasic.ORDER_NONE;
-    var text = Blockly.TIBasic.valueToCode(block, 'TEXT',
-            textOrder) || '\'\'';
-    if (operator) {
-        // Upper and lower case are functions built into JavaScript.
-        var code = text + operator;
-    } else {
-        // Title case is not a native JavaScript function.  Define one.
-        var functionName = Blockly.TIBasic.provideFunction_(
-            'textToTitleCase',
-            ['function ' + Blockly.TIBasic.FUNCTION_NAME_PLACEHOLDER_ +
-            '(str) {',
-                '  return str.replace(/\\S+/g,',
-                '      function(txt) {return txt[0].toUpperCase() + ' +
-                'txt.substring(1).toLowerCase();});',
-                '}']);
-        var code = functionName + '(' + text + ')';
-    }
-    return [code, Blockly.TIBasic.ORDER_FUNCTION_CALL];
-};
-
-Blockly.TIBasic['text_trim'] = function (block) {
-    // Trim spaces.
-    var OPERATORS = {
-        'LEFT': ".replace(/^[\\s\\xa0]+/, '')",
-        'RIGHT': ".replace(/[\\s\\xa0]+$/, '')",
-        'BOTH': '.trim()'
-    };
-    var operator = OPERATORS[block.getFieldValue('MODE')];
-    var text = Blockly.TIBasic.valueToCode(block, 'TEXT',
-            Blockly.TIBasic.ORDER_MEMBER) || '\'\'';
-    return [text + operator, Blockly.TIBasic.ORDER_FUNCTION_CALL];
-};
+// NOT IN TI-BASIC
+// Blockly.TIBasic['text_changeCase'] = function (block) {
+//     // Change capitalization.
+//     var OPERATORS = {
+//         'UPPERCASE': '.toUpperCase()',
+//         'LOWERCASE': '.toLowerCase()',
+//         'TITLECASE': null
+//     };
+//     var operator = OPERATORS[block.getFieldValue('CASE')];
+//     var textOrder = operator ? Blockly.TIBasic.ORDER_MEMBER :
+//         Blockly.TIBasic.ORDER_NONE;
+//     var text = Blockly.TIBasic.valueToCode(block, 'TEXT',
+//             textOrder) || '\'\'';
+//     if (operator) {
+//         // Upper and lower case are functions built into JavaScript.
+//         var code = text + operator;
+//     } else {
+//         // Title case is not a native JavaScript function.  Define one.
+//         var functionName = Blockly.TIBasic.provideFunction_(
+//             'textToTitleCase',
+//             ['function ' + Blockly.TIBasic.FUNCTION_NAME_PLACEHOLDER_ +
+//             '(str) {',
+//                 '  return str.replace(/\\S+/g,',
+//                 '      function(txt) {return txt[0].toUpperCase() + ' +
+//                 'txt.substring(1).toLowerCase();});',
+//                 '}']);
+//         var code = functionName + '(' + text + ')';
+//     }
+//     return [code, Blockly.TIBasic.ORDER_FUNCTION_CALL];
+// };
+//
+// Blockly.TIBasic['text_trim'] = function (block) {
+//     // Trim spaces.
+//     var OPERATORS = {
+//         'LEFT': ".replace(/^[\\s\\xa0]+/, '')",
+//         'RIGHT': ".replace(/[\\s\\xa0]+$/, '')",
+//         'BOTH': '.trim()'
+//     };
+//     var operator = OPERATORS[block.getFieldValue('MODE')];
+//     var text = Blockly.TIBasic.valueToCode(block, 'TEXT',
+//             Blockly.TIBasic.ORDER_MEMBER) || '\'\'';
+//     return [text + operator, Blockly.TIBasic.ORDER_FUNCTION_CALL];
+// };
 
 Blockly.TIBasic['text_print'] = function (block) {
     // Print statement.
     var msg = Blockly.TIBasic.valueToCode(block, 'TEXT',
-            Blockly.TIBasic.ORDER_NONE) || '\'\'';
+            Blockly.TIBasic.ORDER_NONE) || '\"\"';
     return 'Disp ' + msg + ':';
 };
 
-Blockly.TIBasic['text_prompt_ext'] = function (block) {
-    // Prompt function.
-    if (block.getField('TEXT')) {
-        // Internal message.
-        var msg = Blockly.TIBasic.quote_(block.getFieldValue('TEXT'));
-    } else {
-        // External message.
-        var msg = Blockly.TIBasic.valueToCode(block, 'TEXT',
-                Blockly.TIBasic.ORDER_NONE) || '\'\'';
-    }
-    var code = 'window.prompt(' + msg + ')';
-    var toNumber = block.getFieldValue('TYPE') == 'NUMBER';
-    if (toNumber) {
-        code = 'parseFloat(' + code + ')';
-    }
-    return [code, Blockly.TIBasic.ORDER_FUNCTION_CALL];
+Blockly.TIBasic['tibasic_text_prompt'] = function(block) {
+  var dropdown_types = block.getFieldValue('TYPES');
+  console.log(dropdown_types);
+  var text_prompt = Blockly.TIBasic.valueToCode(block, 'PROMPT',
+            Blockly.TIBasic.ORDER_NONE) || '\"\"';
+  var variable_userinput = Blockly.TIBasic.variableDB_.getName(block.getFieldValue('USERINPUT'), Blockly.Variables.NAME_TYPE);
+  var fn;
+  if (dropdown_types === 'TEXT') {
+      fn = 'RequestStr ';
+  } else {
+      fn = 'Request ';
+  }
+  return fn + text_prompt + ', ' + variable_userinput + ':';
 };
-
-Blockly.TIBasic['text_prompt'] = Blockly.TIBasic['text_prompt_ext'];

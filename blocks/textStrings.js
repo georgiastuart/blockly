@@ -312,7 +312,7 @@ Blockly.Blocks['text_indexOf'] = {
         this.setHelpUrl(Blockly.Msg.TEXT_INDEXOF_HELPURL);
         this.setColour(Blockly.Blocks.texts.HUE);
         this.setOutput(true, 'Number');
-        this.appendValueInput('STRING')
+        this.appendValueInput('VALUE')
             .setCheck('String')
             .appendField(Blockly.Msg.TEXT_INDEXOF_INPUT_INTEXT);
         this.appendValueInput('FIND')
@@ -695,7 +695,7 @@ Blockly.Blocks['tibasic_text_prompt'] = {
         this.jsonInit(
             {
                 "type": "tibasic_text_prompt",
-                "message0": "Prompt for %1 with message %2 %3 and store to %4",
+                "message0": "Prompt for %1 with message %2 and store to %3",
                 "args0": [
                     {
                         "type": "field_dropdown",
@@ -712,23 +712,20 @@ Blockly.Blocks['tibasic_text_prompt'] = {
                         ]
                     },
                     {
-                        "type": "input_dummy"
-                    },
-                    {
-                        "type": "input_value",
-                        "name": "PROMPT",
-                        "check": "String"
+                        "type": "field_input",
+                        "name": "prompt",
+                        "text": "Enter some text!"
                     },
                     {
                         "type": "field_variable",
-                        "name": "USERINPUT",
-                        "variable": "userInput"
+                        "name": "storedText",
+                        "variable": "storedText"
                     }
                 ],
                 "inputsInline": true,
                 "previousStatement": null,
                 "nextStatement": null,
-                "colour": 160,
+                "colour": Blockly.Blocks.texts.HUE,
                 "tooltip": "Prompt the user for a string with your message and store to a variable.",
                 "helpUrl": ""
             }
