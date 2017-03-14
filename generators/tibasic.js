@@ -39,6 +39,11 @@ goog.require('Blockly.Generator');
 Blockly.TIBasic = new Blockly.Generator('TIBasic');
 
 /**
+ * Disable indenting
+ */
+Blockly.TIBasic.INDENT = '';
+
+/**
  * List of illegal variable names.
  * This is not intended to be a security feature.  Blockly is 100% client-side,
  * so bypassing this list is trivial.  This is intended to prevent users from

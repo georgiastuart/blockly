@@ -37,17 +37,17 @@ Blockly.TIBasic['controls_if'] = function(block) {
     conditionCode = Blockly.TIBasic.valueToCode(block, 'IF' + n,
       Blockly.TIBasic.ORDER_NONE) || 'false';
     branchCode = Blockly.TIBasic.statementToCode(block, 'DO' + n);
-    code += (n > 0 ? ' else ' : '') +
-        'if (' + conditionCode + ') {\n' + branchCode + '}';
+    code += (n > 0 ? 'ElseIf ' : 'If ') +
+        conditionCode + ' Then:' + branchCode;
 
     ++n;
   } while (block.getInput('IF' + n));
 
   if (block.getInput('ELSE')) {
     branchCode = Blockly.TIBasic.statementToCode(block, 'ELSE');
-    code += ' else {\n' + branchCode + '}';
+    code += 'Else:' + branchCode;
   }
-  return code + '\n';
+  return code + "EndIf:";
 };
 
 Blockly.TIBasic['controls_ifelse'] = Blockly.TIBasic['controls_if'];
@@ -55,16 +55,15 @@ Blockly.TIBasic['controls_ifelse'] = Blockly.TIBasic['controls_if'];
 Blockly.TIBasic['logic_compare'] = function(block) {
   // Comparison operator.
   var OPERATORS = {
-    'EQ': '==',
-    'NEQ': '!=',
+    'EQ': '=',
+    'NEQ': '/=',
     'LT': '<',
     'LTE': '<=',
     'GT': '>',
     'GTE': '>='
   };
   var operator = OPERATORS[block.getFieldValue('OP')];
-  var order = (operator == '==' || operator == '!=') ?
-      Blockly.TIBasic.ORDER_EQUALITY : Blockly.TIBasic.ORDER_RELATIONAL;
+  var order = Blockly.TIBasic.ORDER_RELATIONAL;
   var argument0 = Blockly.TIBasic.valueToCode(block, 'A', order) || '0';
   var argument1 = Blockly.TIBasic.valueToCode(block, 'B', order) || '0';
   var code = argument0 + ' ' + operator + ' ' + argument1;
@@ -73,8 +72,8 @@ Blockly.TIBasic['logic_compare'] = function(block) {
 
 Blockly.TIBasic['logic_operation'] = function(block) {
   // Operations 'and', 'or'.
-  var operator = (block.getFieldValue('OP') == 'AND') ? '&&' : '||';
-  var order = (operator == '&&') ? Blockly.TIBasic.ORDER_LOGICAL_AND :
+  var operator = (block.getFieldValue('OP') == 'AND') ? 'and' : 'or';
+  var order = (operator == 'and') ? Blockly.TIBasic.ORDER_LOGICAL_AND :
       Blockly.TIBasic.ORDER_LOGICAL_OR;
   var argument0 = Blockly.TIBasic.valueToCode(block, 'A', order);
   var argument1 = Blockly.TIBasic.valueToCode(block, 'B', order);
@@ -84,7 +83,7 @@ Blockly.TIBasic['logic_operation'] = function(block) {
     argument1 = 'false';
   } else {
     // Single missing arguments have no effect on the return value.
-    var defaultArgument = (operator == '&&') ? 'true' : 'false';
+    var defaultArgument = (operator == 'and') ? 'true' : 'false';
     if (!argument0) {
       argument0 = defaultArgument;
     }
@@ -101,7 +100,7 @@ Blockly.TIBasic['logic_negate'] = function(block) {
   var order = Blockly.TIBasic.ORDER_LOGICAL_NOT;
   var argument0 = Blockly.TIBasic.valueToCode(block, 'BOOL', order) ||
       'true';
-  var code = '!' + argument0;
+  var code = 'not(' + argument0 + ")";
   return [code, order];
 };
 
@@ -113,17 +112,17 @@ Blockly.TIBasic['logic_boolean'] = function(block) {
 
 Blockly.TIBasic['logic_null'] = function(block) {
   // Null data type.
-  return ['null', Blockly.TIBasic.ORDER_ATOMIC];
+  return ['undef', Blockly.TIBasic.ORDER_ATOMIC];
 };
 
 Blockly.TIBasic['logic_ternary'] = function(block) {
   // Ternary operator.
   var value_if = Blockly.TIBasic.valueToCode(block, 'IF',
-      Blockly.TIBasic.ORDER_CONDITIONAL) || 'false';
+      Blockly.TIBasic.ORDER_FUNCTION_CALL) || 'false';
   var value_then = Blockly.TIBasic.valueToCode(block, 'THEN',
-      Blockly.TIBasic.ORDER_CONDITIONAL) || 'null';
+      Blockly.TIBasic.ORDER_FUNCTION_CALL) || 'undef';
   var value_else = Blockly.TIBasic.valueToCode(block, 'ELSE',
-      Blockly.TIBasic.ORDER_CONDITIONAL) || 'null';
-  var code = value_if + ' ? ' + value_then + ' : ' + value_else;
-  return [code, Blockly.TIBasic.ORDER_CONDITIONAL];
+      Blockly.TIBasic.ORDER_FUNCTION_CALL) || 'undef';
+  var code = "ifFn(" + value_if + ',' + value_then + ',' + value_else + ")";
+  return [code, Blockly.TIBasic.ORDER_FUNCTION_CALL];
 };
