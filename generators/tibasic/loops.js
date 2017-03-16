@@ -43,17 +43,18 @@ Blockly.TIBasic['controls_repeat_ext'] = function(block) {
   branch = Blockly.TIBasic.addLoopTrap(branch, block.id);
   var code = '';
   var loopVar = Blockly.TIBasic.variableDB_.getDistinctName(
-      'count', Blockly.Variables.NAME_TYPE);
+      'loops', Blockly.Variables.NAME_TYPE);
+  code += 'Local ' + loopVar;
   var endVar = repeats;
   if (!repeats.match(/^\w+$/) && !Blockly.isNumber(repeats)) {
     var endVar = Blockly.TIBasic.variableDB_.getDistinctName(
         'repeat_end', Blockly.Variables.NAME_TYPE);
-    code += 'var ' + endVar + ' = ' + repeats + ';\n';
+    code += ',' + endVar + ":";
+    code += '' + endVar + ':=' + repeats + ':';
+  } else {
+    code += ':';
   }
-  code += 'for (var ' + loopVar + ' = 0; ' +
-      loopVar + ' < ' + endVar + '; ' +
-      loopVar + '++) {\n' +
-      branch + '}\n';
+  code += 'For ' + loopVar + ',1,' + endVar + ':' + branch + 'EndFor:';
   return code;
 };
 
@@ -69,9 +70,9 @@ Blockly.TIBasic['controls_whileUntil'] = function(block) {
   var branch = Blockly.TIBasic.statementToCode(block, 'DO');
   branch = Blockly.TIBasic.addLoopTrap(branch, block.id);
   if (until) {
-    argument0 = '!' + argument0;
+    argument0 = 'not ' + argument0;
   }
-  return 'while (' + argument0 + ') {\n' + branch + '}\n';
+  return 'While ' + argument0 + ':' + branch + 'EndWhile:';
 };
 
 Blockly.TIBasic['controls_for'] = function(block) {
@@ -91,50 +92,43 @@ Blockly.TIBasic['controls_for'] = function(block) {
       Blockly.isNumber(increment)) {
     // All arguments are simple numbers.
     var up = parseFloat(argument0) <= parseFloat(argument1);
-    code = 'for (' + variable0 + ' = ' + argument0 + '; ' +
-        variable0 + (up ? ' <= ' : ' >= ') + argument1 + '; ' +
-        variable0;
+    code = 'For ' + variable0 + ',' + (up ? argument0 : argument1 ) + ',' +
+        (up ? argument1 : argument0 );
     var step = Math.abs(parseFloat(increment));
-    if (step == 1) {
-      code += up ? '++' : '--';
-    } else {
-      code += (up ? ' += ' : ' -= ') + step;
+    if (step != 1) {
+      code += ',' + step;
     }
-    code += ') {\n' + branch + '}\n';
+    code += ':' + branch + 'EndFor:';
   } else {
-    code = '';
-    // Cache non-trivial values to variables to prevent repeated look-ups.
-    var startVar = argument0;
-    if (!argument0.match(/^\w+$/) && !Blockly.isNumber(argument0)) {
-      startVar = Blockly.TIBasic.variableDB_.getDistinctName(
-          variable0 + '_start', Blockly.Variables.NAME_TYPE);
-      code += 'var ' + startVar + ' = ' + argument0 + ';\n';
-    }
-    var endVar = argument1;
-    if (!argument1.match(/^\w+$/) && !Blockly.isNumber(argument1)) {
-      var endVar = Blockly.TIBasic.variableDB_.getDistinctName(
-          variable0 + '_end', Blockly.Variables.NAME_TYPE);
-      code += 'var ' + endVar + ' = ' + argument1 + ';\n';
-    }
     // Determine loop direction at start, in case one of the bounds
     // changes during loop execution.
     var incVar = Blockly.TIBasic.variableDB_.getDistinctName(
         variable0 + '_inc', Blockly.Variables.NAME_TYPE);
-    code += 'var ' + incVar + ' = ';
+    // Cache non-trivial values to variables to prevent repeated look-ups.
+    var startVar = Blockly.TIBasic.variableDB_.getDistinctName(
+        variable0 + '_start', Blockly.Variables.NAME_TYPE);
+    var endVar = Blockly.TIBasic.variableDB_.getDistinctName(
+        variable0 + '_end', Blockly.Variables.NAME_TYPE);
+    var tmpVar = Blockly.TIBasic.variableDB_.getDistinctName(
+          'swap', Blockly.Variables.NAME_TYPE);
+
+    code = 'Local ' + incVar + ',' + startVar + ',' + endVar + ':';
+    code += incVar + ' := ';
     if (Blockly.isNumber(increment)) {
-      code += Math.abs(increment) + ';\n';
+      code += Math.abs(increment) + ':';
     } else {
-      code += 'Math.abs(' + increment + ');\n';
+      code += 'abs(' + increment + '):';
     }
-    code += 'if (' + startVar + ' > ' + endVar + ') {\n';
-    code += Blockly.TIBasic.INDENT + incVar + ' = -' + incVar + ';\n';
-    code += '}\n';
-    code += 'for (' + variable0 + ' = ' + startVar + '; ' +
-        incVar + ' >= 0 ? ' +
-        variable0 + ' <= ' + endVar + ' : ' +
-        variable0 + ' >= ' + endVar + '; ' +
-        variable0 + ' += ' + incVar + ') {\n' +
-        branch + '}\n';
+    code += startVar + ' := ' + argument0 + ':';
+    code += endVar + ' := ' + argument1 + ':';
+    code += 'If ' + startVar + ' > ' + endVar + ' Then:';
+    code += 'Local ' + tmpVar + ':';
+    code += tmpVar + ' := ' + startVar + ':';
+    code += startVar + ' := ' + endVar + ':';
+    code += endVar + ' := ' + tmpVar + ':';
+    code += 'EndIf:';
+    code += 'For ' + variable0 + ',' + startVar + ',' + endVar + ',' + incVar + ':' +
+        branch + 'EndFor:';
   }
   return code;
 };
@@ -167,9 +161,9 @@ Blockly.TIBasic['controls_flow_statements'] = function(block) {
   // Flow statements: continue, break.
   switch (block.getFieldValue('FLOW')) {
     case 'BREAK':
-      return 'break;\n';
+      return 'Exit:';
     case 'CONTINUE':
-      return 'continue;\n';
+      return 'Cycle:';
   }
   throw 'Unknown flow statement.';
 };

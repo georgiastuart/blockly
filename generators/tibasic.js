@@ -52,7 +52,8 @@ Blockly.TIBasic.INDENT = '';
  */
 Blockly.TIBasic.addReservedWords(
     'Blockly,' +  // In case JS is evaled in the current window.
-    'Define,Pgrm,EndPgrm,If,Then,ElseIf,EndIf,Disp,While,EndWhile,not,and,or,xor,nor,nand,&,#,!,%,text');
+    'Define,Pgrm,EndPgrm,If,Then,ElseIf,EndIf,Disp,While,EndWhile,not,and,or,xor,nor,nand,&,#,!,%,text',
+    'undef', 'count', 'augment');
 
 /**
  * Order of operation ENUMs.
