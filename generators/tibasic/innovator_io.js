@@ -30,3 +30,16 @@ Blockly.TIBasic['innovator_io_led'] = function(block) {
   var code = 'Send("SET LIGHT ' + state + '"):';
   return code;
 };
+
+Blockly.TIBasic['innovator_io_wait'] = function(block) {
+  if (block.getField('TIME')) {
+        // Internal number.
+        var time = String(Number(block.getFieldValue('TIME')));
+    } else {
+        // External number.
+        var time = Blockly.TIBasic.valueToCode(block, 'TIME',
+        Blockly.TIBasic.ORDER_ASSIGNMENT) || '0';
+    }
+  var code = 'Wait ' + time + ':';
+  return code;
+};

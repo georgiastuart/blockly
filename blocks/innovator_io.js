@@ -72,3 +72,25 @@ Blockly.Blocks['innovator_io_led'] = {
         });
     }
 };
+
+Blockly.Blocks['innovator_io_wait'] = {
+    init: function () {
+        this.jsonInit({
+            "type": "innovator_io_wait",
+            "message0": "Wait for %1 seconds",
+            "args0": [
+                {
+                    "type": "input_value",
+                    "name": "TIME",
+                    "check": "Number"
+                }
+            ],
+            "inputsInline": true,
+            "previousStatement": null,
+            "nextStatement": null,
+            "colour": 58,
+            "tooltip": "",
+            "helpUrl": ""
+        });
+    }
+}
