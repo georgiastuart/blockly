@@ -11,7 +11,7 @@ Blockly.Blocks['innovator_io_led_ext'] = {
     init: function () {
         this.jsonInit({
           "type": "innovator_io_led_ext",
-          "message0": "Turn the RED Led %1 for %2 seconds",
+          "message0": "Turn LIGHT %1 for %2 seconds",
           "args0": [
             {
               "type": "field_dropdown",
@@ -47,7 +47,7 @@ Blockly.Blocks['innovator_io_led'] = {
     init: function () {
         this.jsonInit({
             "type": "innovator_io_led",
-            "message0": "Turn the RED Led %1",
+            "message0": "Turn LIGHT %1",
             "args0": [
             {
               "type": "field_dropdown",
