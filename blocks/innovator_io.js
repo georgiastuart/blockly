@@ -7,11 +7,43 @@ goog.provide('Blockly.Blocks.innovator_io');
 
 goog.require('Blockly.Blocks');
 
+Blockly.Blocks['innovator_io_led_ext'] = {
+    init: function () {
+        this.jsonInit({
+          "type": "innovator_io_led_ext",
+          "message0": "Turn the RED Led %1 for %2 seconds",
+          "args0": [
+            {
+              "type": "field_dropdown",
+              "name": "STATE",
+              "options": [
+                [
+                  "On",
+                  "ON"
+                ],
+                [
+                  "Off",
+                  "OFF"
+                ]
+              ]
+            },
+            {
+              "type": "input_value",
+              "name": "TIME",
+              "check": "Number"
+            }
+          ],
+          "inputsInline": true,
+          "previousStatement": null,
+          "nextStatement": null,
+          "colour": 58,
+          "tooltip": "",
+          "helpUrl": ""
+        });
+    }
+};
+
 Blockly.Blocks['innovator_io_led'] = {
-    /**
-     * Block for print statement.
-     * @this Blockly.Block
-     */
     init: function () {
         this.jsonInit({
             "type": "innovator_io_led",
@@ -19,7 +51,7 @@ Blockly.Blocks['innovator_io_led'] = {
             "args0": [
             {
               "type": "field_dropdown",
-              "name": "NAME",
+              "name": "STATE",
               "options": [
                 [
                   "On",
@@ -32,9 +64,11 @@ Blockly.Blocks['innovator_io_led'] = {
               ]
             }
             ],
-            "colour": 230,
+            "colour": 58,
             "tooltip": "",
-            "helpUrl": ""
+            "helpUrl": "",
+            "previousStatement": null,
+            "nextStatement": null
         });
     }
 };
