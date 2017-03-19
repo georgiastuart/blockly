@@ -355,3 +355,42 @@ Blockly.Blocks['innovator_io_led'] = {
         });
     }
 };
+
+
+Blockly.Blocks['innovator_io_color'] = {
+    init: function () {
+        this.jsonInit({
+            "type": "innovator_io_color",
+            "message0": "Set COLOR to %1 Red %2 Green %3 Blue %4",
+            "args0": [
+                {
+                    "type": "input_dummy"
+                },
+                {
+                    "type": "input_value",
+                    "name": "RED",
+                    "check": "Number",
+                    "align": "RIGHT"
+                },
+                {
+                    "type": "input_value",
+                    "name": "GREEN",
+                    "check": "Number",
+                    "align": "RIGHT"
+                },
+                {
+                    "type": "input_value",
+                    "name": "BLUE",
+                    "check": "Number",
+                    "align": "RIGHT"
+                }
+            ],
+            "inputsInline": false,
+            "previousStatement": null,
+            "nextStatement": null,
+            "colour": 58,
+            "tooltip": "",
+            "helpUrl": ""
+        });
+    }
+};

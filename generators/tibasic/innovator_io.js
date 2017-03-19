@@ -115,3 +115,41 @@ Blockly.TIBasic['innovator_io_led'] = function(block) {
     var code = 'Send("SET LED ' + index + ' ' + value + '"):';
     return code;
 };
+
+Blockly.TIBasic['innovator_io_color'] = function(block) {
+    if (block.getField('RED')) {
+        // Internal number.
+        var red = String(Number(block.getFieldValue('RED')));
+    } else {
+        // External number.
+        var red = Blockly.TIBasic.valueToCode(block, 'RED',
+        Blockly.TIBasic.ORDER_ASSIGNMENT) || '0';
+        if (!Blockly.isNumber(red)) {
+            red = 'eval(' + String(red) + ')'
+        }
+    }
+    if (block.getField('GREEN')) {
+        // Internal number.
+        var green = String(Number(block.getFieldValue('GREEN')));
+    } else {
+        // External number.
+        var green = Blockly.TIBasic.valueToCode(block, 'GREEN',
+        Blockly.TIBasic.ORDER_ASSIGNMENT) || '0';
+        if (!Blockly.isNumber(green)) {
+            green = 'eval(' + String(green) + ')'
+        }
+    }
+    if (block.getField('BLUE')) {
+        // Internal number.
+        var blue = String(Number(block.getFieldValue('BLUE')));
+    } else {
+        // External number.
+        var blue = Blockly.TIBasic.valueToCode(block, 'BLUE',
+        Blockly.TIBasic.ORDER_ASSIGNMENT) || '0';
+        if (!Blockly.isNumber(blue)) {
+            blue = 'eval(' + String(blue) + ')'
+        }
+    }
+    var code = 'Send("SET COLOR ' + red + ' ' + green + ' ' + blue + '"):';
+    return code;
+};
