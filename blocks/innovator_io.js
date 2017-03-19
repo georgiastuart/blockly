@@ -122,7 +122,6 @@ Blockly.Blocks['innovator_io_sound_ext'] = {
     }
 };
 
-
 Blockly.Blocks['innovator_io_sound'] = {
     init: function () {
         this.jsonInit({
@@ -144,3 +143,35 @@ Blockly.Blocks['innovator_io_sound'] = {
         });
     }
 };
+
+Blockly.Blocks['innovator_io_read'] = {
+    init: function () {
+        this.jsonInit({
+            "type": "innovator_io_read",
+            "message0": "Read %1 into %2",
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "DATA",
+                    "options": [
+                        [
+                            "BRIGHTNESS",
+                            "BRIGHTNESS"
+                        ]
+                    ]
+                },
+                {
+                    "type": "field_variable",
+                    "name": "VAR",
+                    "variable": "var"
+                }
+            ],
+            "inputsInline": true,
+            "previousStatement": null,
+            "nextStatement": null,
+            "colour": 58,
+            "tooltip": "",
+            "helpUrl": ""
+        });
+    }
+}

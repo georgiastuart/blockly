@@ -74,3 +74,12 @@ Blockly.TIBasic['innovator_io_sound_ext'] = function(block) {
 };
 
 Blockly.TIBasic['innovator_io_sound'] = Blockly.TIBasic['innovator_io_sound_ext'];
+
+Blockly.TIBasic['innovator_io_read'] = function(block) {
+    var data = block.getFieldValue('DATA');
+    var variable = Blockly.TIBasic.variableDB_.getName(
+      block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
+    var code = 'Send("READ ' + data + '"):';
+    code += 'Get(' + variable + '):';
+    return code;
+};
