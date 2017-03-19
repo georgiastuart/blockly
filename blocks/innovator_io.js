@@ -7,11 +7,93 @@ goog.provide('Blockly.Blocks.innovator_io');
 
 goog.require('Blockly.Blocks');
 
-Blockly.Blocks['innovator_io_led_ext'] = {
+Blockly.Blocks.innovator_io.SENSORS = [
+    [
+        "LED",
+        "LED"
+    ],
+    [
+        "LIGHTLEVEL",
+        "LIGHTLEVEL"
+    ]
+];
+
+Blockly.Blocks.innovator_io.PORTS = [
+    [
+        "OUT 1",
+        "OUT1"
+    ],
+    [
+        "OUT 2",
+        "OUT2"
+    ],
+    [
+        "OUT 3",
+        "OUT3"
+    ],
+    [
+        "IN 1",
+        "IN1"
+    ],
+    [
+        "IN 2",
+        "IN2"
+    ],
+    [
+        "IN 3",
+        "IN3"
+    ],
+    [
+        "I2C",
+        "I2C"
+    ],
+    [
+        "BB 1",
+        "BB1"
+    ],
+    [
+        "BB 2",
+        "BB2"
+    ],
+    [
+        "BB 3",
+        "BB3"
+    ],
+    [
+        "BB 4",
+        "BB4"
+    ],
+    [
+        "BB 5",
+        "BB5"
+    ],
+    [
+        "BB 6",
+        "BB6"
+    ],
+    [
+        "BB 7",
+        "BB7"
+    ],
+    [
+        "BB 8",
+        "BB8"
+    ],
+    [
+        "BB 9",
+        "BB9"
+    ],
+    [
+        "BB 10",
+        "BB10"
+    ]
+];
+
+Blockly.Blocks['innovator_io_light_ext'] = {
     init: function () {
         this.jsonInit({
-          "type": "innovator_io_led_ext",
-          "message0": "Turn LIGHT %1 for %2 seconds",
+          "type": "innovator_io_light_ext",
+          "message0": "turn LIGHT %1 for %2 seconds",
           "args0": [
             {
               "type": "field_dropdown",
@@ -43,11 +125,11 @@ Blockly.Blocks['innovator_io_led_ext'] = {
     }
 };
 
-Blockly.Blocks['innovator_io_led'] = {
+Blockly.Blocks['innovator_io_light'] = {
     init: function () {
         this.jsonInit({
-            "type": "innovator_io_led",
-            "message0": "Turn LIGHT %1",
+            "type": "innovator_io_light",
+            "message0": "turn LIGHT %1",
             "args0": [
             {
               "type": "field_dropdown",
@@ -77,7 +159,7 @@ Blockly.Blocks['innovator_io_wait'] = {
     init: function () {
         this.jsonInit({
             "type": "innovator_io_wait",
-            "message0": "Wait for %1 seconds",
+            "message0": "wait for %1 seconds",
             "args0": [
                 {
                     "type": "input_value",
@@ -99,7 +181,7 @@ Blockly.Blocks['innovator_io_sound_ext'] = {
     init: function () {
         this.jsonInit({
             "type": "innovator_io_sound_ext",
-            "message0": "Play SOUND at %1 Hz for %2 seconds",
+            "message0": "play SOUND at %1 Hz for %2 seconds",
             "args0": [
                 {
                     "type": "input_value",
@@ -126,7 +208,7 @@ Blockly.Blocks['innovator_io_sound'] = {
     init: function () {
         this.jsonInit({
             "type": "innovator_io_sound_ext",
-            "message0": "Play SOUND at %1 Hz",
+            "message0": "play SOUND at %1 Hz",
             "args0": [
                 {
                     "type": "input_value",
@@ -148,7 +230,7 @@ Blockly.Blocks['innovator_io_read'] = {
     init: function () {
         this.jsonInit({
             "type": "innovator_io_read",
-            "message0": "Read %1 into %2",
+            "message0": "read %1 into %2",
             "args0": [
                 {
                     "type": "field_dropdown",
@@ -157,6 +239,10 @@ Blockly.Blocks['innovator_io_read'] = {
                         [
                             "BRIGHTNESS",
                             "BRIGHTNESS"
+                        ],
+                        [
+                            "LIGHTLEVEL 1",
+                            "LIGHTLEVEL 1"
                         ]
                     ]
                 },
@@ -174,4 +260,98 @@ Blockly.Blocks['innovator_io_read'] = {
             "helpUrl": ""
         });
     }
-}
+};
+
+Blockly.Blocks['innovator_io_connect'] = {
+    init: function () {
+        this.jsonInit({
+            "type": "innovator_io_connect",
+            "message0": "connect %1 %2 to port %3",
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "SENSOR",
+                    "options": Blockly.Blocks.innovator_io.SENSORS
+                },
+                {
+                  "type": "field_number",
+                  "name": "INDEX",
+                  "value": 1,
+                  "min": 1,
+                  "max": 100,
+                  "precision": 1
+                },
+                {
+                    "type": "field_dropdown",
+                    "name": "PORT",
+                    "options": Blockly.Blocks.innovator_io.PORTS
+                }
+            ],
+            "inputsInline": true,
+            "previousStatement": null,
+            "nextStatement": null,
+            "colour": 58,
+            "tooltip": "",
+            "helpUrl": ""
+        });
+    }
+};
+
+Blockly.Blocks['innovator_io_disconnect'] = {
+    init: function () {
+        this.jsonInit({
+            "type": "innovator_io_disconnect",
+            "message0": "disconnect %1 %2",
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "SENSOR",
+                    "options": Blockly.Blocks.innovator_io.SENSORS
+                },
+                {
+                  "type": "field_number",
+                  "name": "INDEX",
+                  "value": 1,
+                  "min": 1,
+                  "max": 100,
+                  "precision": 1
+                }
+            ],
+            "inputsInline": true,
+            "previousStatement": null,
+            "nextStatement": null,
+            "colour": 58,
+            "tooltip": "",
+            "helpUrl": ""
+        });
+    }
+};
+
+Blockly.Blocks['innovator_io_led'] = {
+    init: function () {
+        this.jsonInit({
+            "type": "innovator_io_led",
+            "message0": "Set LED %1 to %2",
+            "args0": [
+                {
+                    "type": "field_number",
+                    "name": "INDEX",
+                    "value": 1,
+                    "min": 1,
+                    "max": 100,
+                    "precision": 1
+                },
+                {
+                    "type": "input_value",
+                    "name": "VALUE",
+                    "check": "Number"
+                }
+            ],
+            "previousStatement": null,
+            "nextStatement": null,
+            "colour": 58,
+            "tooltip": "",
+            "helpUrl": ""
+        });
+    }
+};

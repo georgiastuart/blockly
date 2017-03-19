@@ -8,7 +8,7 @@ goog.provide('Blockly.TIBasic.innovator_io');
 
 goog.require('Blockly.TIBasic');
 
-Blockly.TIBasic['innovator_io_led_ext'] = function(block) {
+Blockly.TIBasic['innovator_io_light_ext'] = function(block) {
     var state = block.getFieldValue('STATE');
     if (block.getField('TIME')) {
         // Internal number.
@@ -28,7 +28,7 @@ Blockly.TIBasic['innovator_io_led_ext'] = function(block) {
     return code + '"):';
 };
 
-Blockly.TIBasic['innovator_io_led'] = Blockly.TIBasic['innovator_io_led_ext'];
+Blockly.TIBasic['innovator_io_light'] = Blockly.TIBasic['innovator_io_light_ext'];
 
 Blockly.TIBasic['innovator_io_wait'] = function(block) {
     if (block.getField('TIME')) {
@@ -81,5 +81,37 @@ Blockly.TIBasic['innovator_io_read'] = function(block) {
       block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
     var code = 'Send("READ ' + data + '"):';
     code += 'Get(' + variable + '):';
+    return code;
+};
+
+Blockly.TIBasic['innovator_io_connect'] = function(block) {
+    var sensor = block.getFieldValue('SENSOR');
+    var index = String(Number(block.getFieldValue('INDEX')));
+    var port = block.getFieldValue('PORT');
+    var code = 'Send("CONNECT ' + sensor + ' ' + index + ' ' + port + '"):';
+    return code;
+};
+
+Blockly.TIBasic['innovator_io_disconnect'] = function(block) {
+    var sensor = block.getFieldValue('SENSOR');
+    var index = String(Number(block.getFieldValue('INDEX')));
+    var code = 'Send("DISCONNECT ' + sensor + ' ' + index + '"):';
+    return code;
+};
+
+Blockly.TIBasic['innovator_io_led'] = function(block) {
+    var index = String(Number(block.getFieldValue('INDEX')));
+    if (block.getField('TIME')) {
+        // Internal number.
+        var value = String(Number(block.getFieldValue('VALUE')));
+    } else {
+        // External number.
+        var value = Blockly.TIBasic.valueToCode(block, 'VALUE',
+        Blockly.TIBasic.ORDER_ASSIGNMENT) || '0';
+        if (!Blockly.isNumber(value)) {
+            value = 'eval(' + String(value) + ')'
+        }
+    }
+    var code = 'Send("SET LED ' + index + ' ' + value + '"):';
     return code;
 };

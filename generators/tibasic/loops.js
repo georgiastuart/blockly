@@ -92,9 +92,11 @@ Blockly.TIBasic['controls_for'] = function(block) {
       Blockly.isNumber(increment)) {
     // All arguments are simple numbers.
     var up = parseFloat(argument0) <= parseFloat(argument1);
-    code = 'For ' + variable0 + ',' + (up ? argument0 : argument1 ) + ',' +
-        (up ? argument1 : argument0 );
+    code = 'For ' + variable0 + ',' + argument0 + ',' + argument1;
     var step = Math.abs(parseFloat(increment));
+    if (!up) {
+      step = -step;
+    }
     if (step != 1) {
       code += ',' + step;
     }
@@ -122,10 +124,7 @@ Blockly.TIBasic['controls_for'] = function(block) {
     code += startVar + ' := ' + argument0 + ':';
     code += endVar + ' := ' + argument1 + ':';
     code += 'If ' + startVar + ' > ' + endVar + ' Then:';
-    code += 'Local ' + tmpVar + ':';
-    code += tmpVar + ' := ' + startVar + ':';
-    code += startVar + ' := ' + endVar + ':';
-    code += endVar + ' := ' + tmpVar + ':';
+    code += incVar + ' := -' + incVar + ':';
     code += 'EndIf:';
     code += 'For ' + variable0 + ',' + startVar + ',' + endVar + ',' + incVar + ':' +
         branch + 'EndFor:';
