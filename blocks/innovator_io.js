@@ -93,4 +93,54 @@ Blockly.Blocks['innovator_io_wait'] = {
             "helpUrl": ""
         });
     }
-}
+};
+
+Blockly.Blocks['innovator_io_sound_ext'] = {
+    init: function () {
+        this.jsonInit({
+            "type": "innovator_io_sound_ext",
+            "message0": "Play SOUND at %1 Hz for %2 seconds",
+            "args0": [
+                {
+                    "type": "input_value",
+                    "name": "FREQUENCY",
+                    "check": "Number"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TIME",
+                    "check": "Number"
+                }
+            ],
+            "inputsInline": true,
+            "previousStatement": null,
+            "nextStatement": null,
+            "colour": 58,
+            "tooltip": "",
+            "helpUrl": ""
+        });
+    }
+};
+
+
+Blockly.Blocks['innovator_io_sound'] = {
+    init: function () {
+        this.jsonInit({
+            "type": "innovator_io_sound_ext",
+            "message0": "Play SOUND at %1 Hz",
+            "args0": [
+                {
+                    "type": "input_value",
+                    "name": "FREQUENCY",
+                    "check": "Number"
+                }
+            ],
+            "inputsInline": true,
+            "previousStatement": null,
+            "nextStatement": null,
+            "colour": 58,
+            "tooltip": "",
+            "helpUrl": ""
+        });
+    }
+};
