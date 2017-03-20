@@ -27,7 +27,7 @@
  */
 'use strict';
 
-goog.provide('Blockly.TI_Basic');
+goog.provide('Blockly.TIBasic');
 
 goog.require('Blockly.Generator');
 

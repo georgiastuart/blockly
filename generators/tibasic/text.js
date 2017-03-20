@@ -46,21 +46,21 @@ Blockly.TIBasic['text_join'] = function (block) {
         case 1:
             var element = Blockly.TIBasic.valueToCode(block, 'ADD0',
                     Blockly.TIBasic.ORDER_NONE) || '\"\"';
-            var code = toString(element) + ':';
+            var code = 'string(' + element + ')';
             return [code, Blockly.TIBasic.ORDER_FUNCTION_CALL];
         case 2:
             var element0 = Blockly.TIBasic.valueToCode(block, 'ADD0',
                     Blockly.TIBasic.ORDER_NONE) || '\"\"';
             var element1 = Blockly.TIBasic.valueToCode(block, 'ADD1',
                     Blockly.TIBasic.ORDER_NONE) || '\"\"';
-            var code = toString(element0) + ' & ' + toString(element1) + ':';
+            var code = 'string(' + element0 + ') & string(' + element1 + ')';
             return [code, Blockly.TIBasic.ORDER_ADDITIVE];
         default:
             var elements = new Array(block.itemCount_);
             for (var i = 0; i < block.itemCount_; i++) {
-                elements[i] = toString(Blockly.TIBasic.valueToCode(block, 'ADD' + i, Blockly.TIBasic.ORDER_NONE) || '\"\"');
+                elements[i] = 'string(' + Blockly.TIBasic.valueToCode(block, 'ADD' + i, Blockly.TIBasic.ORDER_NONE) + ')' || '\"\"';
             }
-            var code = elements.join(' & ') + ':';
+            var code = elements.join(' & ');
             return [code, Blockly.TIBasic.ORDER_FUNCTION_CALL];
     }
 };

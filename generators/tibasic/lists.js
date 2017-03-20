@@ -39,7 +39,7 @@ Blockly.TIBasic['lists_create_with'] = function (block) {
     var elements = new Array(block.itemCount_);
     for (var i = 0; i < block.itemCount_; i++) {
         elements[i] = Blockly.TIBasic.valueToCode(block, 'ADD' + i,
-                Blockly.TIBasic.ORDER_ATOMIC) || 'null';
+                Blockly.TIBasic.ORDER_ATOMIC) || 'undef';
     }
     var code = '{' + elements.join(',') + '}';
     return [code, Blockly.TIBasic.ORDER_ATOMIC];
@@ -185,7 +185,7 @@ Blockly.TIBasic['lists_setIndex'] = function (block) {
     var mode = block.getFieldValue('MODE') || 'GET';
     var where = block.getFieldValue('WHERE') || 'FROM_START';
     var value = Blockly.TIBasic.valueToCode(block, 'TO',
-            Blockly.TIBasic.ORDER_ASSIGNMENT) || 'null';
+            Blockly.TIBasic.ORDER_ASSIGNMENT) || 'undef';
     // Cache non-trivial values to variables to prevent repeated look-ups.
     // Closure, which accesses and modifies 'list'.
     function cacheList() {
